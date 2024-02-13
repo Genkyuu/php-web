@@ -8,11 +8,27 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
       - php_files:/var/www/html
+    depends_on:
+      - php
+      - mariadb
 
   php:
     image: php:7.4-fpm
     volumes:
       - php_files:/var/www/html
+    depends_on:
+      - mariadb
+
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: julientieuly
+      MYSQL_PASSWORD: password
+    volumes:
+      - mariadb_data:/var/lib/mysql
 
 volumes:
   php_files:
+  mariadb_data:
